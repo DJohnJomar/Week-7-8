@@ -74,7 +74,7 @@ public class Main {
         //         index++;
         //     }
         // }
-        
+
         // Check for initial operator
         // if (expression.charAt(index) != ' ') {
         //     temp += expression.charAt(index);
@@ -85,13 +85,22 @@ public class Main {
         // }
         // Check for the rest
         while (index < length) {
-
+            //ignores spaces
             if (expression.charAt(index) != ' ') {
                 temp += expression.charAt(index);
                 System.out.println(temp);
+
+                //Check if operator is compounded
+                if(isOperator(temp.charAt(0)) && expression.charAt(index+1) == '='){
+                    index++;
+                    temp+=expression.charAt(index);
+                }
+
+                //Normal flow of checking
                 if (checkForToken(temp) == true) {
                     temp = "";
-                } else if (Character.isDigit(expression.charAt(index)) == true) {
+                } else if (Character.isDigit(expression.charAt(index)) == true) { //Checks if the current temp is a digit
+                    //Identifies the type of number contained in temp
                     while (expression.charAt(index + 1) != ' ' && isOperator(expression.charAt(index + 1)) != true
                             && expression.charAt(index + 1) != ';') {
                         index++;

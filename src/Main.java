@@ -97,6 +97,9 @@ public class Main {
         }
     }
 
+    public static void checkSyntax(HashMap tokensMap){
+        for()
+    }
 
     public static String identifyNumericType(String str) {
         // Regular expressions to match different numeric types

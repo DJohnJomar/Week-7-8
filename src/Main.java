@@ -26,6 +26,7 @@ public class Main {
                 result.clear();
             } catch (Exception e) {
                 System.out.println("Invalid Input");
+                result.clear();
             }
         }
     }
@@ -57,7 +58,6 @@ public class Main {
         }
         // Check for the rest
         while (index < length) {
-            
             //ignores spaces
             if (expression.charAt(index) != ' ') {
                 temp += expression.charAt(index);
@@ -75,7 +75,7 @@ public class Main {
                 }else if (Character.isDigit(expression.charAt(index)) == true) { //Checks if the current temp is a digit
                     //Identifies the type of number contained in temp
                     while (expression.charAt(index + 1) != ' ' && isOperator(expression.charAt(index + 1)) != true
-                            && expression.charAt(index + 1) != ';') {
+                            && expression.charAt(index + 1) != ';' && expression.charAt(index + 1) != ')') {
                         index++;
                         if (expression.charAt(index) != ' ') {
                             temp += expression.charAt(index);
@@ -92,14 +92,10 @@ public class Main {
                     temp = "";
                 }
             }
-            
             index++;
         }
     }
 
-    public static void checkSyntax(HashMap tokensMap){
-        for()
-    }
 
     public static String identifyNumericType(String str) {
         // Regular expressions to match different numeric types
@@ -150,7 +146,6 @@ public class Main {
     }
 
     public static void setupHashMap() {
-
         map.put("byte", "Keyword");
         map.put("short", "Keyword");
         map.put("int", "Keyword");

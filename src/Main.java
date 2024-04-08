@@ -23,6 +23,7 @@ public class Main {
                 for (String str : result) {
                     System.out.println(str);
                 }
+                result.clear();
             } catch (Exception e) {
                 System.out.println("Invalid Input");
             }
@@ -35,7 +36,7 @@ public class Main {
         int index = 0;
         boolean keywordExist = false;
         // traverse through the expression
-        // check for data type
+        // check for data type/keyword
         while (index < length) {
             if (expression.charAt(index) != ' ') {
                 temp += expression.charAt(index);
@@ -54,41 +55,13 @@ public class Main {
             index = 0;
             temp = "";
         }
-        // check for identifier
-        // while (index < length) {
-        //     if (expression.charAt(index) != ' ') {
-        //         temp += expression.charAt(index);
-        //         // set up a skip, used to detect if it is next to an operator thus being it an identifier
-        //         int skip = 1;
-        //         while (expression.charAt(index + skip) == ' ') {
-        //             skip++;
-        //         }
-        //         if (isOperator(expression.charAt(index + skip))) {
-        //             result.add(temp + " : Identifier");
-        //             temp = "";
-        //             index += skip;
-        //             break;
-        //         }
-        //         index++;
-        //     } else {
-        //         index++;
-        //     }
-        // }
-
-        // Check for initial operator
-        // if (expression.charAt(index) != ' ') {
-        //     temp += expression.charAt(index);
-        //     if (isOperator(expression.charAt(index + 1))) {
-        //         temp += expression.charAt(index + 1);
-        //     }
-        //     index++;
-        // }
         // Check for the rest
         while (index < length) {
+            
             //ignores spaces
             if (expression.charAt(index) != ' ') {
                 temp += expression.charAt(index);
-                System.out.println(temp);
+                
 
                 //Check if operator is compounded
                 if(isOperator(temp.charAt(0)) && expression.charAt(index+1) == '='){
@@ -99,7 +72,7 @@ public class Main {
                 //Normal flow of checking
                 if (checkForToken(temp) == true) {
                     temp = "";
-                } else if (Character.isDigit(expression.charAt(index)) == true) { //Checks if the current temp is a digit
+                }else if (Character.isDigit(expression.charAt(index)) == true) { //Checks if the current temp is a digit
                     //Identifies the type of number contained in temp
                     while (expression.charAt(index + 1) != ' ' && isOperator(expression.charAt(index + 1)) != true
                             && expression.charAt(index + 1) != ';') {
@@ -108,21 +81,22 @@ public class Main {
                             temp += expression.charAt(index);
                         }
                     }
-
                     result.add(temp + " : " + identifyNumericType(temp));
                     temp = "";
-                } else {
+                }else {
+                    while(Character.isLetter(expression.charAt(index+1)) == true){
+                        index++;
+                        temp += expression.charAt(index);
+                    }
                     result.add(temp + " : Identifier");
                     temp = "";
                 }
             }
+            
             index++;
         }
     }
 
-    public static void checkIfValid() {
-        // Check if there are operators
-    }
 
     public static String identifyNumericType(String str) {
         // Regular expressions to match different numeric types

@@ -7,18 +7,20 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    static HashMap<String, String> map = new HashMap<String, String>();
-    static ArrayList<String> result = new ArrayList<String>();
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private static HashMap<String, String> map = new HashMap<String, String>();
+    private static ArrayList<String> result = new ArrayList<String>();
+    private static int index;
 
     public static void main(String[] args) throws Exception {
         setupHashMap();
         while (true) {
             try {
                 System.out.println("Enter your Java Arithmetic Expression: ");
-                String string = reader.readLine();
+                String input = reader.readLine();
 
-                analyzeExpression(string);
+                //analyzeExpression(string);
+                parseAssignment(input);
                 System.out.println("Result size: " + result.size());
                 for (String str : result) {
                     System.out.println(str);
@@ -30,76 +32,83 @@ public class Main {
         }
     }
 
-    public static void analyzeExpression(String expression) {
-        String temp = "";
-        int length = expression.length();
-        int index = 0;
-        boolean keywordExist = false;
-        // traverse through the expression
-        // check for data type/keyword
-        while (index < length) {
-            if (expression.charAt(index) != ' ') {
-                temp += expression.charAt(index);
+    private static void parseAssignment(String input) throws SyntaxErrorException {
+        parseDataType(input); // Added parsing for data type
+        parseIdentifier(input);
+        if (index < input.length() && input.charAt(index) == '=') {
+            index++;
+            parseExpression(input);
+        } else {
+            throw new SyntaxErrorException("Expected '=' at index " + index);
+        }
+    }
+    
+    private static void parseExpression(String input) throws SyntaxErrorException {
+        parseTerm(input);
+        while (index < input.length() && (input.charAt(index) == '+' || input.charAt(index) == '-')) {
+            index++;
+            parseTerm(input);
+        }
+    }
+    
+    private static void parseTerm(String input) throws SyntaxErrorException {
+        parseFactor(input);
+        while (index < input.length() && (input.charAt(index) == '*' || input.charAt(index) == '/')) {
+            index++;
+            parseFactor(input);
+        }
+    }
+    
+    private static void parseFactor(String input) throws SyntaxErrorException {
+        if (index < input.length() && input.charAt(index) == '(') {
+            index++;
+            parseExpression(input);
+            if (index < input.length() && input.charAt(index) == ')') {
                 index++;
-                if (checkForToken(temp) == true) {
-                    temp = "";
-                    keywordExist = true;
-                    break;
-                }
             } else {
+                throw new SyntaxErrorException("Expected ')' at index " + index);
+            }
+        } else if (Character.isDigit(input.charAt(index))) {
+            parseNumber(input);
+        } else {
+            parseIdentifier(input);
+        }
+    }
+    
+    private static void parseIdentifier(String input) throws SyntaxErrorException {
+        String temp = "";
+        if (index < input.length() && Character.isLetter(input.charAt(index))) {
+            while (index < input.length() && (Character.isLetterOrDigit(input.charAt(index)) || input.charAt(index) == '_')) {
                 index++;
             }
+            result.add(temp+" : Identifier");
+        } else {
+            throw new SyntaxErrorException("Expected identifier at index " + index);
         }
-        // if there is no keyword, reset index and temp
-        if (keywordExist == false) {
-            index = 0;
-            temp = "";
-        }
-        // Check for the rest
-        while (index < length) {
-            
-            //ignores spaces
-            if (expression.charAt(index) != ' ') {
-                temp += expression.charAt(index);
-                
-
-                //Check if operator is compounded
-                if(isOperator(temp.charAt(0)) && expression.charAt(index+1) == '='){
-                    index++;
-                    temp+=expression.charAt(index);
-                }
-
-                //Normal flow of checking
-                if (checkForToken(temp) == true) {
-                    temp = "";
-                }else if (Character.isDigit(expression.charAt(index)) == true) { //Checks if the current temp is a digit
-                    //Identifies the type of number contained in temp
-                    while (expression.charAt(index + 1) != ' ' && isOperator(expression.charAt(index + 1)) != true
-                            && expression.charAt(index + 1) != ';') {
-                        index++;
-                        if (expression.charAt(index) != ' ') {
-                            temp += expression.charAt(index);
-                        }
-                    }
-                    result.add(temp + " : " + identifyNumericType(temp));
-                    temp = "";
-                }else {
-                    while(Character.isLetter(expression.charAt(index+1)) == true){
-                        index++;
-                        temp += expression.charAt(index);
-                    }
-                    result.add(temp + " : Identifier");
-                    temp = "";
-                }
-            }
-            
+    }
+    
+    private static void parseNumber(String input) {
+        String temp = "";
+        while (index < input.length() && Character.isDigit(input.charAt(index))) {
+            temp += input.charAt(index);
             index++;
         }
+        result.add(temp+" : "+identifyNumericType(temp));
+    }
+    
+    private static void parseDataType(String input) throws SyntaxErrorException {
+        String temp = "";
+        if (index < input.length() && Character.isLetter(input.charAt(index))) {
+            while (index < input.length() && Character.isLetterOrDigit(input.charAt(index))) {
+                temp += input.charAt(index);
+                index++;
+            }
+           checkForToken(temp);
+        } else {
+            throw new SyntaxErrorException("Expected data type keyword at index " + index);
+        }
     }
 
-    public static void checkSyntax(HashMap tokensMap){
-        for()
-    }
 
     public static String identifyNumericType(String str) {
         // Regular expressions to match different numeric types
@@ -175,3 +184,9 @@ public class Main {
         map.put(";", "Semicolon");
     }
 }
+class SyntaxErrorException extends Exception {
+    public SyntaxErrorException(String message) {
+        super(message);
+    }
+}
+

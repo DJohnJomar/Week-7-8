@@ -1,3 +1,6 @@
+//A java program that parses an arithmetic expression written also in java
+//April 9, 2024
+//3CS-A || Dimaunahan, Meneses
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -13,13 +16,14 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         setupHashMap();
+        System.out.println("For the data types, use the appropriate symbols; 'f'  for float, 'd' for double, etc.");
         while (true) {
             try {
-                System.out.println("Enter your Java Arithmetic Expression: ");
+                System.out.print("\nEnter your Java Arithmetic Expression: ");
                 String string = reader.readLine();
 
                 analyzeExpression(string);
-                System.out.println("Result size: " + result.size());
+                System.out.println("Tokenized : ");
                 for (String str : result) {
                     System.out.println(str);
                 }
@@ -83,7 +87,7 @@ public class Main {
                     }
                     result.add(temp + " : " + identifyNumericType(temp));
                     temp = "";
-                }else {
+                }else {//Finds identifiers
                     while(Character.isLetter(expression.charAt(index+1)) == true){
                         index++;
                         temp += expression.charAt(index);
@@ -123,10 +127,10 @@ public class Main {
         }
     }
 
+
     public static boolean checkForToken(String string) {
         boolean tokenMatch = false;
         for (String key : map.keySet()) {
-            // System.out.println("String: "+string+" Key: "+ key);
             if (string.equals(key)) {
                 result.add(string + " : " + map.get(key));
                 tokenMatch = true;
@@ -145,6 +149,7 @@ public class Main {
         return isOperator;
     }
 
+    //Fills the hashmap with corresponding tokens with its lexemes.
     public static void setupHashMap() {
         map.put("byte", "Keyword");
         map.put("short", "Keyword");

@@ -68,7 +68,8 @@ public class Main {
                 
 
                 //Check if operator is compounded
-                if(isOperator(temp.charAt(0)) && expression.charAt(index+1) == '='){
+                if(isOperator(temp.charAt(0)) && (expression.charAt(index+1) == '=' || expression.charAt(index+1) == '+' || expression.charAt(index+1) == '-')){
+                    if(expression.charAt(index+1) == '='){}
                     index++;
                     temp+=expression.charAt(index);
                 }

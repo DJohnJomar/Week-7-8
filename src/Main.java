@@ -40,7 +40,7 @@ public class Main {
                 input = reader.readLine();
 
                 // analyzeExpression(string);
-                parseAssignment(input);
+                parseArithmeticExpression(input);
                 System.out.println("Result size: " + result.size());
                 for (String str : result) {
                     System.out.println(str);
@@ -53,7 +53,7 @@ public class Main {
         }
     }
 
-    private static void parseAssignment(String input) throws SyntaxErrorException {
+    private static void parseArithmeticExpression(String input) throws SyntaxErrorException {
         String temp = "";
         parseDataType(input); // Added parsing for data type
         parseIdentifier(input); 

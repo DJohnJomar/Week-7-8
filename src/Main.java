@@ -34,23 +34,13 @@ public class Main {
                 System.out.println(e);
                 System.out.println("Invalid Input");
             }
-            // System.out.println("Enter your Java Arithmetic Expression: ");
-            // String input = reader.readLine();
-
-            // //analyzeExpression(string);
-            // parseAssignment(input);
-            // System.out.println("Result size: " + result.size());
-            // for (String str : result) {
-            // System.out.println(str);
-            // }
-            // result.clear();
         }
     }
 
     private static void parseAssignment(String input) throws SyntaxErrorException {
         String temp = "";
         parseDataType(input); // Added parsing for data type
-        parseIdentifier(input);
+        parseIdentifier(input); 
         if (input.charAt(index) == ' ') {
             index++;
         }

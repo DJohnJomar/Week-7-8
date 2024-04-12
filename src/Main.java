@@ -76,6 +76,9 @@ public class Main {
             index++;
             parseTerm(input);
         }
+        while (index < input.length() && input.charAt(index) == ' ') {
+            index++;
+        }
     }
 
     private static void parseTerm(String input) throws SyntaxErrorException {
@@ -91,6 +94,9 @@ public class Main {
             index++;
             parseFactor(input);
         }
+        while (index < input.length() && input.charAt(index) == ' ') {
+            index++;
+        }
     }
 
     private static void parseFactor(String input) throws SyntaxErrorException {
@@ -104,16 +110,18 @@ public class Main {
             checkForToken(temp);
             index++;
             parseExpression(input);
-            //temp = String.valueOf(input.charAt(index)); // Update temp with the character at the current index
+            System.out.println("heheCharacter at index " + index + ": " + input.charAt(index));
             while (index < input.length() && input.charAt(index) == ' ') {
                 index++;
             }
             if (index < input.length() && input.charAt(index) == ')') {
                 System.out.println("Character at index " + index + ": " + input.charAt(index));
-                System.out.println(index + " I've been here, temp = " + temp);
-                temp += input.charAt(index);
+                temp = ")";
                 checkForToken(temp);
                 index++;
+                while (index < input.length() && input.charAt(index) == ' ') {
+                    index++;
+                }
             } else {
                 System.out.println("Character at index " + index + ": " + input.charAt(index));
                 throw new SyntaxErrorException("Expected ')' at index " + index);
@@ -122,6 +130,9 @@ public class Main {
             parseNumber(input);
         } else {
             parseIdentifier(input);
+        }
+        while (index < input.length() && input.charAt(index) == ' ') {
+            index++;
         }
     }
 
@@ -142,6 +153,9 @@ public class Main {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected identifier at index " + index);
         }
+        while (index < input.length() && input.charAt(index) == ' ') {
+            index++;
+        }
     }
 
     private static void parseNumber(String input) {
@@ -155,6 +169,9 @@ public class Main {
             index++;
         }
         result.add(temp + " : " + identifyNumericType(temp));
+        while (index < input.length() && input.charAt(index) == ' ') {
+            index++;
+        }
     }
 
     private static void parseDataType(String input) throws SyntaxErrorException {
@@ -186,7 +203,7 @@ public class Main {
 
     private static void parseSemiColon(String input) throws SyntaxErrorException {
         String temp = "";
-        if (input.charAt(index) == ' ') {
+        while (index < input.length() && input.charAt(index) == ' ') {
             index++;
         }
         if (index < input.length() && input.charAt(index) == ';') {
@@ -197,6 +214,9 @@ public class Main {
         } else {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected semicolon at index " + index);
+        }
+        while (index < input.length() && input.charAt(index) == ' ') {
+            index++;
         }
     }
 

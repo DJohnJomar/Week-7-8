@@ -65,14 +65,13 @@ public class Main {
      * | <identifier> = <expression>;
      */
     private static void parseAssignment(String input) throws SyntaxErrorException {
-        // System.out.println("-----------------Parsing Assignment");
         String temp = "";
         index = 0;
         parseDataType(input);
         parseIdentifier(input);
         skipForWhiteSpaces();
 
-        //if data type -> identifier -> = order
+        // if data type -> identifier -> = order
         if (index < input.length() && input.charAt(index) == '=') {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
@@ -80,10 +79,11 @@ public class Main {
             index++;
             parseExpression(input);
             parseSemiColon(input);
-        } 
+        }
         /*
          * if data type -> identifier -> += order
-         * isOperator() checks if current character is an operator, most compound characters start with an operator
+         * isOperator() checks if current character is an operator, most compound
+         * characters start with an operator
          * followd by the equal (=) sign
          */
         else if (index < input.length() && isOperator(input.charAt(index))) {
@@ -99,12 +99,11 @@ public class Main {
             parseExpression(input);
             parseSemiColon(input);
         }
-        //If nothing matches, then it is an error 
+        // If nothing matches, then it is an error
         else {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected '=' at index " + index);
         }
-        // System.out.println("-----------------Done Parsing Assignment");
     }
 
     /*
@@ -112,12 +111,11 @@ public class Main {
      * <expression> =:: <term> {+ | - <term>}
      */
     private static void parseExpression(String input) throws SyntaxErrorException {
-        // System.out.println("-----------------Parsing Expression");
         String temp = "";
         skipForWhiteSpaces();
         parseTerm(input);
 
-        //Parses other terms
+        // Parses other terms
         while (index < input.length() && (input.charAt(index) == '+' || input.charAt(index) == '-')) {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
@@ -127,7 +125,6 @@ public class Main {
             parseTerm(input);
         }
         skipForWhiteSpaces();
-        // System.out.println("-----------------Done Parsing Expression");
     }
 
     /*
@@ -135,12 +132,11 @@ public class Main {
      * <term> =:: <factor> {+ | / factor}
      */
     private static void parseTerm(String input) throws SyntaxErrorException {
-        // System.out.println("-----------------Parsing Term");
         String temp = "";
         skipForWhiteSpaces();
         parseFactor(input);
 
-        //Parses for other factors
+        // Parses for other factors
         while (index < input.length() && (input.charAt(index) == '*' || input.charAt(index) == '/')) {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
@@ -150,20 +146,19 @@ public class Main {
             parseFactor(input);
         }
         skipForWhiteSpaces();
-        // System.out.println("-----------------Done Parsing Term");
     }
 
     /*
      * Parses for:
-     * <factor> =:: (<expression>) | <increment> | <decrement> | <number> | <identifier>
+     * <factor> =:: (<expression>) | <increment> | <decrement> | <number> |
+     * <identifier>
      * 
      */
     private static void parseFactor(String input) throws SyntaxErrorException {
-        // System.out.println("-----------------Parsing Factor");
         String temp = "";
         skipForWhiteSpaces();
 
-        //checks for (<expression>)
+        // checks for (<expression>)
         if (index < input.length() && input.charAt(index) == '(') {
             // Parse expression within parentheses
             System.out.println("Character at index " + index + ": " + input.charAt(index));
@@ -172,7 +167,6 @@ public class Main {
             index++;
             parseExpression(input);
             skipForWhiteSpaces();
-            // System.out.println("-----------------Done Parsing Factor");
             if (index < input.length() && input.charAt(index) == ')') {
                 // Check for closing parenthesis
                 System.out.println("Character at index " + index + ": " + input.charAt(index));
@@ -180,31 +174,27 @@ public class Main {
                 checkForToken(temp);
                 index++;
                 skipForWhiteSpaces();
-                // System.out.println("-----------------Done Parsing Factor");
             } else {
                 throw new SyntaxErrorException("Expected ')' at index " + index);
             }
         }
 
-        //checks for <number> | <increment> | <decrement> 
+        // checks for <number> | <increment> | <decrement>
         else if (Character.isDigit(input.charAt(index))) {
-            //Parses <increment>
+            // Parses <increment>
             if (input.charAt(index + 1) == '+' && input.charAt(index + 2) == '+') {
                 parseIncrement(input);
-                // System.out.println("-----------------Done Parsing Factor");
-            } 
-            //Parses decrement
+            }
+            // Parses decrement
             else if (input.charAt(index + 1) == '-' && input.charAt(index + 2) == '-') {
                 parseDecrement(input);
-                // System.out.println("-----------------Done Parsing Factor");
-            } 
-            //Parses <number>
+            }
+            // Parses <number>
             else {
                 parseNumber(input);
-                // System.out.println("-----------------Done Parsing Factor");
             }
         } else {
-            //Parses identifier
+            // Parses identifier
             parseIdentifier(input);
         }
         skipForWhiteSpaces();
@@ -215,11 +205,11 @@ public class Main {
      * <identifier> =:: <letter> {<letter>}
      */
     private static void parseIdentifier(String input) throws SyntaxErrorException {
-        // System.out.println("-----------------Parsing Identifier");
         String temp = "";
         skipForWhiteSpaces();
 
-        //Gathers all letters to temp as long as current character is a letter/digit/"_"
+        // Gathers all letters to temp as long as current character is a
+        // letter/digit/"_"
         if (index < input.length() && Character.isLetter(input.charAt(index))) {
             while (index < input.length()
                     && (Character.isLetterOrDigit(input.charAt(index)) || input.charAt(index) == '_')) {
@@ -227,13 +217,12 @@ public class Main {
                 temp += input.charAt(index);
                 index++;
             }
-            result.add(temp + " : Identifier");//Similar function to checkForToken();
+            result.add(temp + " : Identifier");// Similar function to checkForToken();
         } else {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected identifier at index " + index);
         }
         skipForWhiteSpaces();
-        // System.out.println("-----------------Done Parsing Identifier");
     }
 
     /*
@@ -250,9 +239,8 @@ public class Main {
             temp += input.charAt(index);
             index++;
         }
-        result.add(temp + " : " + identifyNumericType(temp));//Similar function to checkForToken()
+        result.add(temp + " : " + identifyNumericType(temp));// Similar function to checkForToken()
         skipForWhiteSpaces();
-        // System.out.println("-----------------Done Parsing Number");
     }
 
     /*
@@ -260,12 +248,11 @@ public class Main {
      * <increment> =:: <digit> ++;
      */
     private static void parseIncrement(String input) {
-        // System.out.println("-----------------Parsing Increment");
         String temp = "";
         skipForWhiteSpaces();
-        parseNumber(input);//Parses the number
+        parseNumber(input);// Parses the number
 
-        //Gets the increment symbol
+        // Gets the increment symbol
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '+') {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             System.out.println(temp);
@@ -274,7 +261,6 @@ public class Main {
         }
         checkForToken(temp);
         skipForWhiteSpaces();
-        // System.out.println("-----------------Done Parsing Increment");
     }
 
     /*
@@ -282,12 +268,11 @@ public class Main {
      * <decrement> =:: <digit> ;
      */
     private static void parseDecrement(String input) {
-        // System.out.println("-----------------Parsing Decrement");
         String temp = "";
         skipForWhiteSpaces();
-        parseNumber(input);//Parses the number
+        parseNumber(input);// Parses the number
 
-        //Gets the decrement symbol
+        // Gets the decrement symbol
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '-') {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
@@ -295,7 +280,6 @@ public class Main {
         }
         checkForToken(temp);
         skipForWhiteSpaces();
-        // System.out.println("-----------------Done Parsing Decrement");
     }
 
     /*
@@ -303,7 +287,6 @@ public class Main {
      * <data type> =:: "int" |... |"double"
      */
     private static void parseDataType(String input) throws SyntaxErrorException {
-        // System.out.println("-----------------Parsing Data Type");
         String temp = "";
         skipForWhiteSpaces();
 
@@ -326,12 +309,10 @@ public class Main {
             throw new SyntaxErrorException("Expected data type keyword at index " + index);
         }
         skipForWhiteSpaces();
-        // System.out.println("-----------------Done Parsing Data Type");
     }
 
-    //Checks for the semicolon
+    // Checks for the semicolon
     private static void parseSemiColon(String input) throws SyntaxErrorException {
-        // System.out.println("-----------------Parsing Semicolon");
         String temp = "";
         skipForWhiteSpaces();
 
@@ -345,7 +326,6 @@ public class Main {
             throw new SyntaxErrorException("Expected semicolon at index " + index);
         }
         skipForWhiteSpaces();
-        // System.out.println("-----------------Done Parsing Semi Colon");
     }
 
     public static void skipForWhiteSpaces() {
@@ -364,6 +344,7 @@ public class Main {
         String floatRegex = "-?\\d+\\.\\d+[fF]?";
         String doubleRegex = "-?\\d+\\.\\d+([dD]|\\.)?";
 
+        // Checking if the input str matches one of the patterns
         if (Pattern.matches(byteRegex, str)) {
             return "Byte Literal";
         } else if (Pattern.matches(shortRegex, str)) {
@@ -381,10 +362,11 @@ public class Main {
         }
     }
 
+    // Checks the input string if it matches one of the keys in the hashmap of
+    // lexemes:tokens pairs
     public static boolean checkForToken(String string) {
         boolean tokenMatch = false;
         for (String key : map.keySet()) {
-            // System.out.println("String: "+string+" Key: "+ key);
             if (string.equals(key)) {
                 result.add(string + " : " + map.get(key));
                 tokenMatch = true;
@@ -404,6 +386,7 @@ public class Main {
         return isOperator;
     }
 
+    // Simply filling up the hashmap with values beforehand
     public static void setupHashMap() {
 
         map.put("byte", "Keyword");

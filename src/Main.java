@@ -1,6 +1,20 @@
 //A java program that parses an arithmetic expression written also in java
 //April 9, 2024
 //3CS-A || Dimaunahan, Meneses
+
+/*
+ * The program follows the following BNF:
+ * <arithmetic expression> =:: <data type> <identifier> = <expression> ;
+ * <expression> =:: <term> {+ | - <term>}
+ * term =:: <factor> {+ | / factor}
+ * <factor> =:: (<expression) | <number> | <identifier> | <increment> | <decrement>
+ * <number =:: <digit> {<digit>}[.<digit>]
+ * <data type> =:: "int" |... |double
+ * <digit> =:: "0"| ... | "9"
+ * <letter> =:: "a" | ... | "Z"
+ * <increment> =:: <digit> ++;
+ * <decrement> =:: <digit> --; 
+ */
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;

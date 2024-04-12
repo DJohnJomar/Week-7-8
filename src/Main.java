@@ -31,6 +31,7 @@ public class Main {
     private static ArrayList<String> result = new ArrayList<String>();
     private static int index;
     private static String input;
+    private static boolean hasDataType;
 
     public static void main(String[] args) throws Exception {
         setupHashMap();
@@ -38,9 +39,7 @@ public class Main {
             try {
                 System.out.println("Enter your Java Arithmetic Expression: ");
                 input = reader.readLine();
-
-                // analyzeExpression(string);
-                parseArithmeticExpression(input);
+                parseAssignment(input);
                 System.out.println("Result size: " + result.size());
                 for (String str : result) {
                     System.out.println(str);
@@ -49,17 +48,19 @@ public class Main {
             } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("Invalid Input");
+                result.clear();
             }
         }
     }
 
-    private static void parseArithmeticExpression(String input) throws SyntaxErrorException {
+    
+    private static void parseAssignment(String input) throws SyntaxErrorException {
+        //System.out.println("-----------------Parsing Assignment");
         String temp = "";
-        parseDataType(input); // Added parsing for data type
+        index = 0;
+        parseDataType(input);
         parseIdentifier(input); 
-        if (input.charAt(index) == ' ') {
-            index++;
-        }
+        checkForWhiteSpaces();
         if (index < input.length() && input.charAt(index) == '=') {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
@@ -71,9 +72,11 @@ public class Main {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected '=' at index " + index);
         }
+        //System.out.println("-----------------Done Parsing Assignment");
     }
 
     private static void parseExpression(String input) throws SyntaxErrorException {
+       //System.out.println("-----------------Parsing Expression");
         String temp = "";
         checkForWhiteSpaces();
         parseTerm(input);
@@ -82,12 +85,15 @@ public class Main {
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
+            temp = "";
             parseTerm(input);
         }
         checkForWhiteSpaces();
+        //System.out.println("-----------------Done Parsing Expression");
     }
 
     private static void parseTerm(String input) throws SyntaxErrorException {
+        //System.out.println("-----------------Parsing Term");
         String temp = "";
         checkForWhiteSpaces();
         parseFactor(input);
@@ -96,49 +102,60 @@ public class Main {
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
+            temp = "";
             parseFactor(input);
         }
         checkForWhiteSpaces();
+        //System.out.println("-----------------Done Parsing Term");
     }
 
     private static void parseFactor(String input) throws SyntaxErrorException {
+       // System.out.println("-----------------Parsing Factor");
         String temp = "";
         checkForWhiteSpaces();
         if (index < input.length() && input.charAt(index) == '(') {
+            // Parse expression within parentheses
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
             parseExpression(input);
-            System.out.println("heheCharacter at index " + index + ": " + input.charAt(index));
             checkForWhiteSpaces();
+          //  System.out.println("-----------------Done Parsing Factor");
             if (index < input.length() && input.charAt(index) == ')') {
+                // Check for closing parenthesis
                 System.out.println("Character at index " + index + ": " + input.charAt(index));
                 temp = ")";
                 checkForToken(temp);
                 index++;
                 checkForWhiteSpaces();
+               // System.out.println("-----------------Done Parsing Factor");
             } else {
-                System.out.println("Character at index " + index + ": " + input.charAt(index));
                 throw new SyntaxErrorException("Expected ')' at index " + index);
             }
         } else if (Character.isDigit(input.charAt(index))) {
-            if(input.charAt(index+1) == '+' & input.charAt(index+2) == '+'){
+            // Parse number
+            if (input.charAt(index + 1) == '+' && input.charAt(index + 2) == '+') {
                 parseNumber(input);
                 parseIncrement(input);
-            }else if (input.charAt(index+1) == '-' & input.charAt(index+2) == '-'){
+                System.out.println("-----------------Done Parsing Factor");
+            } else if (input.charAt(index + 1) == '-' && input.charAt(index + 2) == '-') {
                 parseNumber(input);
                 parseDecrement(input);
-            }else{
+            //    System.out.println("-----------------Done Parsing Factor");
+            } else {
                 parseNumber(input);
+             //   System.out.println("-----------------Done Parsing Factor");
             }
         } else {
+            // Parse identifier
             parseIdentifier(input);
         }
         checkForWhiteSpaces();
     }
 
     private static void parseIdentifier(String input) throws SyntaxErrorException {
+      //  System.out.println("-----------------Parsing Identifier");
         String temp = "";
         checkForWhiteSpaces();
         if (index < input.length() && Character.isLetter(input.charAt(index))) {
@@ -151,12 +168,15 @@ public class Main {
             result.add(temp + " : Identifier");
         } else {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
+            System.out.println("temp: "+temp);
             throw new SyntaxErrorException("Expected identifier at index " + index);
         }
         checkForWhiteSpaces();
+       // System.out.println("-----------------Done Parsing Identifier");
     }
 
     private static void parseNumber(String input) {
+        System.out.println("-----------------Parsing Number");
         String temp = "";
         checkForWhiteSpaces();
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '.') {
@@ -166,9 +186,11 @@ public class Main {
         }
         result.add(temp + " : " + identifyNumericType(temp));
         checkForWhiteSpaces();
+      //  System.out.println("-----------------Done Parsing Number");
     }
 
     private static void parseIncrement(String input){
+      //  System.out.println("-----------------Parsing Increment");
         String temp = "";
         checkForWhiteSpaces();
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '+') {
@@ -179,8 +201,10 @@ public class Main {
         }
         checkForToken(temp);
         checkForWhiteSpaces();
+      //  System.out.println("-----------------Done Parsing Increment");
     }
     private static void parseDecrement(String input){
+      //  System.out.println("-----------------Parsing Decrement");
         String temp = "";
         checkForWhiteSpaces();
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '-') {
@@ -190,32 +214,41 @@ public class Main {
         }
         checkForToken(temp);
         checkForWhiteSpaces();
+     //   System.out.println("-----------------Done Parsing Decrement");
     }
 
     private static void parseDataType(String input) throws SyntaxErrorException {
+      //  System.out.println("-----------------Parsing Data Type");
         String temp = "";
         // Skip any leading whitespace
         checkForWhiteSpaces();
 
         if (index < input.length() && Character.isLetter(input.charAt(index))) {
-            while (index < input.length() && Character.isLetterOrDigit(input.charAt(index))) {
+            while (index < input.length() && Character.isLetterOrDigit(input.charAt(index)) && input.charAt(index) != '=') {
                 System.out.println("Character at index " + index + ": " + input.charAt(index));
                 temp += input.charAt(index);
                 index++;
             }
             if (!temp.isEmpty()) {
-                checkForToken(temp);
+                hasDataType = checkForToken(temp);//method returns a boolean value if there is a match
+                if(!hasDataType){//If there is no data type, reset index to start
+                    System.out.println("No Data Type");
+                    index = 0;
+                }
             }
-        } else {
+        } 
+        else {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected data type keyword at index " + index);
         }
 
         // Skip any whitespace after the data type keyword
         checkForWhiteSpaces();
+      //  System.out.println("-----------------Done Parsing Data Type");
     }
 
     private static void parseSemiColon(String input) throws SyntaxErrorException {
+     //   System.out.println("-----------------Parsing Semicolon");
         String temp = "";
         checkForWhiteSpaces();
         if (index < input.length() && input.charAt(index) == ';') {
@@ -228,9 +261,11 @@ public class Main {
             throw new SyntaxErrorException("Expected semicolon at index " + index);
         }
         checkForWhiteSpaces();
+     //   System.out.println("-----------------Done Parsing Semi Colon");
     }
     public static void checkForWhiteSpaces(){
         while (index < input.length() && input.charAt(index) == ' ') {
+            System.out.println("Skipped Character: "+input.charAt(index));
             index++;
         }
     }
@@ -268,7 +303,7 @@ public class Main {
             if (string.equals(key)) {
                 result.add(string + " : " + map.get(key));
                 tokenMatch = true;
-                // System.out.println("Match: "+string+" and "+ map.get(key));
+                System.out.println("Match: "+string+" and "+ map.get(key));
                 break;
             }
         }

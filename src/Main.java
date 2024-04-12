@@ -1,3 +1,6 @@
+//A java program that parses an arithmetic expression written also in java
+//April 9, 2024
+//3CS-A || Dimaunahan, Meneses
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;

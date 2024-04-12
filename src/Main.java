@@ -5,7 +5,8 @@
 /*
  * The program follows the following BNF:
  * <arithmetic expression> =:: <data type> <identifier> = <expression>;
- *                             | <identifier> += <expression>; // The compounds
+ *                             |<data type> <identifier> += <expression>; // The compounds operators
+ *                             | <identifier> += <expression>; // The compounds operators
  *                             | <identifier> = <expression>;
  * <expression> =:: <term> {+ | - <term>}
  * term =:: <factor> {+ | / factor}
@@ -62,6 +63,16 @@ public class Main {
         parseIdentifier(input); 
         checkForWhiteSpaces();
         if (index < input.length() && input.charAt(index) == '=') {
+            System.out.println("Character at index " + index + ": " + input.charAt(index));
+            temp += input.charAt(index);
+            checkForToken(temp);
+            index++;
+            parseExpression(input);
+            parseSemiColon(input);
+        }else if(index < input.length() && isOperator(input.charAt(index))){
+            System.out.println("Character at index " + index + ": " + input.charAt(index));
+            temp += input.charAt(index);
+            index++;
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             checkForToken(temp);

@@ -147,11 +147,9 @@ public class Main {
         } else if (Character.isDigit(input.charAt(index))) {
             // Parse number
             if (input.charAt(index + 1) == '+' && input.charAt(index + 2) == '+') {
-                parseNumber(input);
                 parseIncrement(input);
-                System.out.println("-----------------Done Parsing Factor");
+               // System.out.println("-----------------Done Parsing Factor");
             } else if (input.charAt(index + 1) == '-' && input.charAt(index + 2) == '-') {
-                parseNumber(input);
                 parseDecrement(input);
             //    System.out.println("-----------------Done Parsing Factor");
             } else {
@@ -204,6 +202,7 @@ public class Main {
       //  System.out.println("-----------------Parsing Increment");
         String temp = "";
         checkForWhiteSpaces();
+        parseNumber(input);
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '+') {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             System.out.println(temp);
@@ -218,6 +217,7 @@ public class Main {
       //  System.out.println("-----------------Parsing Decrement");
         String temp = "";
         checkForWhiteSpaces();
+        parseNumber(input);
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '-') {
             System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
@@ -314,7 +314,7 @@ public class Main {
             if (string.equals(key)) {
                 result.add(string + " : " + map.get(key));
                 tokenMatch = true;
-                System.out.println("Match: "+string+" and "+ map.get(key));
+                //System.out.println("Match: "+string+" and "+ map.get(key));
                 break;
             }
         }

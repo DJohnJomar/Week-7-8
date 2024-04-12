@@ -4,7 +4,9 @@
 
 /*
  * The program follows the following BNF:
- * <arithmetic expression> =:: <data type> <identifier> = <expression> ;
+ * <arithmetic expression> =:: <data type> <identifier> = <expression>;
+ *                             | <identifier> += <expression>; // The compounds
+ *                             | <identifier> = <expression>;
  * <expression> =:: <term> {+ | - <term>}
  * term =:: <factor> {+ | / factor}
  * <factor> =:: (<expression) | <number> | <identifier> | <increment> | <decrement>

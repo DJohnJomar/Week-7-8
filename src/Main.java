@@ -51,6 +51,7 @@ public class Main {
                 System.out.println(e);
                 System.out.println("Invalid Input");
                 result.clear();
+                result.clear();
             }
         }
     }
@@ -339,7 +340,6 @@ public class Main {
 
     // Simply filling up the hashmap with values beforehand
     public static void setupHashMap() {
-
         map.put("byte", "Keyword");
         map.put("short", "Keyword");
         map.put("int", "Keyword");

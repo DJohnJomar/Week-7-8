@@ -37,9 +37,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         setupHashMap();// Used to fill up the hashmap with corresponding lexeme:token pairs
         System.out.println("Sample Inputs: \n\tx = x+5; \n\tint nummber = number*(5+x/3-1+7)/43*5;");
-        System.out.print("\nEnter your Java Arithmetic Expression: ");
         while (true) {
             try {
+                System.out.print("\nEnter your Java Arithmetic Expression: ");
                 input = reader.readLine();
                 parseAssignment(input);
                 System.out.println("Lexeme : Token Pairs");

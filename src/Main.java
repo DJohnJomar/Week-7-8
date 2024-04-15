@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Main {
@@ -73,7 +72,6 @@ public class Main {
 
         // if data type -> identifier -> = order
         if (index < input.length() && input.charAt(index) == '=') {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
@@ -87,11 +85,9 @@ public class Main {
          * followd by the equal (=) sign
          */
         else if (index < input.length() && isOperator(input.charAt(index))) {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             index++;
 
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
@@ -101,7 +97,6 @@ public class Main {
         }
         // If nothing matches, then it is an error
         else {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected '=' at index " + index);
         }
     }
@@ -117,7 +112,6 @@ public class Main {
 
         // Parses other terms
         while (index < input.length() && (input.charAt(index) == '+' || input.charAt(index) == '-')) {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
@@ -138,7 +132,6 @@ public class Main {
 
         // Parses for other factors
         while (index < input.length() && (input.charAt(index) == '*' || input.charAt(index) == '/')) {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
@@ -161,7 +154,6 @@ public class Main {
         // checks for (<expression>)
         if (index < input.length() && input.charAt(index) == '(') {
             // Parse expression within parentheses
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
@@ -169,7 +161,6 @@ public class Main {
             skipForWhiteSpaces();
             if (index < input.length() && input.charAt(index) == ')') {
                 // Check for closing parenthesis
-                System.out.println("Character at index " + index + ": " + input.charAt(index));
                 temp = ")";
                 checkForToken(temp);
                 index++;
@@ -213,13 +204,11 @@ public class Main {
         if (index < input.length() && Character.isLetter(input.charAt(index))) {
             while (index < input.length()
                     && (Character.isLetterOrDigit(input.charAt(index)) || input.charAt(index) == '_')) {
-                System.out.println("Character at index " + index + ": " + input.charAt(index));
                 temp += input.charAt(index);
                 index++;
             }
             result.add(temp + " : Identifier");// Similar function to checkForToken();
         } else {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected identifier at index " + index);
         }
         skipForWhiteSpaces();
@@ -235,7 +224,6 @@ public class Main {
         skipForWhiteSpaces();
 
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '.') {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             index++;
         }
@@ -254,7 +242,6 @@ public class Main {
 
         // Gets the increment symbol
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '+') {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             System.out.println(temp);
             temp += input.charAt(index);
             index++;
@@ -274,7 +261,6 @@ public class Main {
 
         // Gets the decrement symbol
         while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '-') {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             index++;
         }
@@ -293,7 +279,6 @@ public class Main {
         if (index < input.length() && Character.isLetter(input.charAt(index))) {
             while (index < input.length() && Character.isLetterOrDigit(input.charAt(index))
                     && input.charAt(index) != '=') {
-                System.out.println("Character at index " + index + ": " + input.charAt(index));
                 temp += input.charAt(index);
                 index++;
             }
@@ -305,7 +290,6 @@ public class Main {
                 }
             }
         } else {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected data type keyword at index " + index);
         }
         skipForWhiteSpaces();
@@ -317,12 +301,10 @@ public class Main {
         skipForWhiteSpaces();
 
         if (index < input.length() && input.charAt(index) == ';') {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             temp += input.charAt(index);
             index++;
             checkForToken(temp);
         } else {
-            System.out.println("Character at index " + index + ": " + input.charAt(index));
             throw new SyntaxErrorException("Expected semicolon at index " + index);
         }
         skipForWhiteSpaces();

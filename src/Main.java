@@ -38,7 +38,7 @@ public class Main {
         setupHashMap();// Used to fill up the hashmap with corresponding lexeme:token pairs
         while (true) {
             try {
-                System.out.println("Sample Inputs: \n\tx = x+5; \n\tint nummber = number*(5+x/3-1+7)/43*5");
+                System.out.println("Sample Inputs: \n\tx = x+5; \n\tint nummber = number*(5+x/3-1+7)/43*5;");
                 System.out.print("\nEnter your Java Arithmetic Expression: ");
                 input = reader.readLine();
 
@@ -172,7 +172,7 @@ public class Main {
         }
 
         // checks for <number> | <increment> | <decrement>
-        else if (Character.isDigit(input.charAt(index))) {
+        else if (index + 2 < input.length() && Character.isDigit(input.charAt(index))) {
             // Parses <increment>
             if (input.charAt(index + 1) == '+' && input.charAt(index + 2) == '+') {
                 parseIncrement(input);

@@ -11,8 +11,10 @@
  * <expression> =:: <term> {+ | - | % <term>}
  * <term> =:: <factor> {* | / factor}
  * <factor> =:: (<expression>) | <increment> | <decrement> | <number> | <identifier>
- * <increment> =:: <digit> ++;
- * <decrement> =:: <digit> --; 
+ * <increment> =:: <number> ++;
+ * <increment> =:: <identifier> ++;
+ * <decrement> =:: <number> --; 
+ * <decrement> =:: <identifier> --;
  * <number =:: <digit> {<digit>}[.<digit>]
  * <identifier> =:: <letter> {<letter>}
  * <data type> =:: "int" |... |double

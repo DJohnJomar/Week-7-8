@@ -38,7 +38,8 @@ public class Main {
         setupHashMap();// Used to fill up the hashmap with corresponding lexeme:token pairs
         while (true) {
             try {
-                System.out.println("Enter your Java Arithmetic Expression: ");
+                System.out.println("Sample Inputs: \n\tx = x+5; \n\tint nummber = number*(5+x/3-1+7)/43*5");
+                System.out.print("\nEnter your Java Arithmetic Expression: ");
                 input = reader.readLine();
 
                 parseAssignment(input);
@@ -219,7 +220,6 @@ public class Main {
      * <number =:: <digit> {<digit>}[.<digit>]
      */
     private static void parseNumber(String input) {
-        System.out.println("-----------------Parsing Number");
         String temp = "";
         skipForWhiteSpaces();
 

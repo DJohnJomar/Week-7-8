@@ -8,8 +8,8 @@
  *                             |<data type> <identifier> += <expression>; // The compounds operators
  *                             | <identifier> += <expression>; // The compounds operators
  *                             | <identifier> = <expression>;
- * <expression> =:: <term> {+ | - <term>}
- * <term> =:: <factor> {+ | / factor}
+ * <expression> =:: <term> {+ | - | % <term>}
+ * <term> =:: <factor> {* | / factor}
  * <factor> =:: (<expression>) | <increment> | <decrement> | <number> | <identifier>
  * <increment> =:: <digit> ++;
  * <decrement> =:: <digit> --; 
@@ -102,7 +102,7 @@ public class Main {
 
     /*
      * Parses for:
-     * <expression> =:: <term> {+ | - <term>}
+     * <expression> =:: <term> {+ | - | % <term>}
      */
     private static void parseExpression(String input) throws SyntaxErrorException {
         String temp = "";
@@ -110,7 +110,8 @@ public class Main {
         parseTerm(input);
 
         // Parses other terms
-        while (index < input.length() && (input.charAt(index) == '+' || input.charAt(index) == '-')) {
+        while (index < input.length() && (input.charAt(index) == '+' || input.charAt(index) == '-'
+                || (input.charAt(index) == '%' && index + 1 < input.length() && input.charAt(index + 1) != '='))) {
             temp += input.charAt(index);
             checkForToken(temp);
             index++;

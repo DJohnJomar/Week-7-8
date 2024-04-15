@@ -42,7 +42,7 @@ public class Main {
                 System.out.print("\nEnter your Java Arithmetic Expression: ");
                 input = reader.readLine();
                 parseAssignment(input);
-                System.out.println("Lexeme : Token Pairs");
+                System.out.println("\n----- Lexeme : Token Pairs -----\n");
                 for (String str : result) {
                     System.out.println(str);
                 }
@@ -110,8 +110,8 @@ public class Main {
         parseTerm(input);
 
         // Parses other terms
-        while (index < input.length() && (input.charAt(index) == '+' || input.charAt(index) == '-'
-                || (input.charAt(index) == '%' && index + 1 < input.length() && input.charAt(index + 1) != '='))) {
+        while (index < input.length()
+                && (input.charAt(index) == '+' || input.charAt(index) == '-' || input.charAt(index) == '%')) {
             temp += input.charAt(index);
             checkForToken(temp);
             index++;
@@ -284,7 +284,6 @@ public class Main {
             if (!temp.isEmpty()) {
                 hasDataType = checkForToken(temp);// method returns a boolean value if there is a match
                 if (!hasDataType) {// If there is no data type, reset index to start
-                    System.out.println("No Data Type");
                     index = 0;
                 }
             }

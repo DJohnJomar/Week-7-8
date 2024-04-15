@@ -172,21 +172,31 @@ public class Main {
 
         // checks for <number> | <increment> | <decrement> | <identifier>
         else if (Character.isDigit(input.charAt(index))) {
-            // Parses <increment>
-            if (index + 2 < input.length() && input.charAt(index + 1) == '+' && input.charAt(index + 2) == '+') {
-                parseIncrement(input);
+            parseNumber(input);
+
+            //check for increment/decrement
+            if (index + 1 < input.length() && input.charAt(index) == '+' && input.charAt(index + 1) == '+') {
+                temp += "" + input.charAt(index) + input.charAt(index + 1);
+                index += 2;
+                checkForToken(temp);
+            } else if (index + 1 < input.length() && input.charAt(index) == '-' && input.charAt(index + 1) == '-') {
+                temp += "" + input.charAt(index) + input.charAt(index + 1);
+                index += 2;
+                checkForToken(temp);
             }
-            // Parses decrement
-            else if (index + 2 < input.length() && input.charAt(index + 1) == '-' && input.charAt(index + 2) == '-') {
-                parseDecrement(input);
-            }
-            // Parses <number>
-            else {
-                parseNumber(input);
-            }
-        } else {
+        }else {
             // Parses identifier
             parseIdentifier(input);
+            //check for increment/decrement
+            if (index + 1 < input.length() && input.charAt(index) == '+' && input.charAt(index + 1) == '+') {
+                temp += "" + input.charAt(index) + input.charAt(index + 1);
+                index += 2;
+                checkForToken(temp);
+            } else if (index + 1 < input.length() && input.charAt(index) == '-' && input.charAt(index + 1) == '-') {
+                temp += "" + input.charAt(index) + input.charAt(index + 1);
+                index += 2;
+                checkForToken(temp);
+            }
         }
         skipForWhiteSpaces();
     }
@@ -227,43 +237,6 @@ public class Main {
             index++;
         }
         result.add(temp + " : " + identifyNumericType(temp));// Similar function to checkForToken()
-        skipForWhiteSpaces();
-    }
-
-    /*
-     * Parses for:
-     * <increment> =:: <digit> ++;
-     */
-    private static void parseIncrement(String input) {
-        String temp = "";
-        skipForWhiteSpaces();
-        parseNumber(input);// Parses the number
-
-        // Gets the increment symbol
-        while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '+') {
-            System.out.println(temp);
-            temp += input.charAt(index);
-            index++;
-        }
-        checkForToken(temp);
-        skipForWhiteSpaces();
-    }
-
-    /*
-     * Parses for:
-     * <decrement> =:: <digit> ;
-     */
-    private static void parseDecrement(String input) {
-        String temp = "";
-        skipForWhiteSpaces();
-        parseNumber(input);// Parses the number
-
-        // Gets the decrement symbol
-        while (index < input.length() && Character.isDigit(input.charAt(index)) || input.charAt(index) == '-') {
-            temp += input.charAt(index);
-            index++;
-        }
-        checkForToken(temp);
         skipForWhiteSpaces();
     }
 

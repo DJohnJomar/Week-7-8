@@ -36,15 +36,13 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         setupHashMap();// Used to fill up the hashmap with corresponding lexeme:token pairs
+        System.out.println("Sample Inputs: \n\tx = x+5; \n\tint nummber = number*(5+x/3-1+7)/43*5;");
+        System.out.print("\nEnter your Java Arithmetic Expression: ");
         while (true) {
             try {
-                System.out.println("Sample Inputs: \n\tx = x+5; \n\tint nummber = number*(5+x/3-1+7)/43*5;");
-                System.out.print("\nEnter your Java Arithmetic Expression: ");
                 input = reader.readLine();
-
                 parseAssignment(input);
-
-                System.out.println("Result size: " + result.size());
+                System.out.println("Lexeme : Token Pairs");
                 for (String str : result) {
                     System.out.println(str);
                 }
@@ -171,14 +169,14 @@ public class Main {
             }
         }
 
-        // checks for <number> | <increment> | <decrement>
-        else if (index + 2 < input.length() && Character.isDigit(input.charAt(index))) {
+        // checks for <number> | <increment> | <decrement> | <identifier>
+        else if (Character.isDigit(input.charAt(index))) {
             // Parses <increment>
-            if (input.charAt(index + 1) == '+' && input.charAt(index + 2) == '+') {
+            if (index + 2 < input.length() && input.charAt(index + 1) == '+' && input.charAt(index + 2) == '+') {
                 parseIncrement(input);
             }
             // Parses decrement
-            else if (input.charAt(index + 1) == '-' && input.charAt(index + 2) == '-') {
+            else if (index + 2 < input.length() && input.charAt(index + 1) == '-' && input.charAt(index + 2) == '-') {
                 parseDecrement(input);
             }
             // Parses <number>
@@ -312,7 +310,6 @@ public class Main {
 
     public static void skipForWhiteSpaces() {
         while (index < input.length() && input.charAt(index) == ' ') {
-            System.out.println("Skipped Character: " + input.charAt(index));
             index++;
         }
     }
@@ -352,7 +349,6 @@ public class Main {
             if (string.equals(key)) {
                 result.add(string + " : " + map.get(key));
                 tokenMatch = true;
-                // System.out.println("Match: "+string+" and "+ map.get(key));
                 break;
             }
         }
